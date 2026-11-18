@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -400,
+        16
+      ],
+      "id": "2336b98a-05e2-4ae2-ac88-8b79f2b482e5",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT CONCAT('Financial Control Tower - Daily Alerts',\n  GROUP_CONCAT(CONCAT(CHAR(10 USING utf8mb4), '- ', alert_type, ': ', alerts, ' (', total, ')') SEPARATOR '')\n) AS message\nFROM (\n  SELECT alert_type, COUNT(*) AS alerts, ROUND(SUM(amount),2) AS total\n  FROM v_daily_alerts GROUP BY alert_type\n) t;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        -160,
+        16
+      ],
+      "id": "5f7e76ab-f76f-4641-bd1a-a4c0d9e69872",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "mySql": {
+          "id": "cMw3JbpjfsaSXlFb",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.slack.com/services/YOUR_WEBHOOK_HERE",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: $json.message }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        128,
+        16
+      ],
+      "id": "6cafc447-4c18-4e79-8d1b-78e6de37ee1e",
+      "name": "HTTP Request"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "102ca903264c850051e3c1c9502d9c5fc4864c46247ffd5805047a46c0e4525b"
+  }
+}
