@@ -25,7 +25,7 @@ It uses MySQL, Power BI and n8n, and sends a short summary to Slack every mornin
 
 ## The data
 
-Four simple tables: customers, supplier, and the invoices of each. About 1,800 invoices in total, with a mix of paid, unpaid and overdue ones.
+Four simple tables: customers, suppliers, and the invoices of each. About 1,800 invoices in total, with a mix of paid, unpaid and overdue ones.
 
 ![Data model](images/data_model.png)
 
@@ -37,19 +37,34 @@ If you know SAP, this is the same idea as its open items for customers (`BSID`) 
 
 Five Power BI pages built on top of SQL views.
 
-**1. Executive summary** - the big numbers and the aging chart.
+### 1. Executive summary
+
+The big numbers and the aging chart.
+
 ![Summary](images/dashboard_1_summary.png)
 
-**2. Debt aging** - every unpaid invoice, filterable by customer.
+### 2. Debt aging
+
+Every unpaid invoice, filterable by customer.
+
 ![Aging](images/dashboard_2_aging.png)
 
-**3. Customer risk** - who needs attention first.
+### 3. Customer risk
+
+Who needs attention first.
+
 ![Risk](images/dashboard_3_risk.png)
 
-**4. Cash flow** - money in vs. money out.
+### 4. Cash flow
+
+Money in vs. money out.
+
 ![Cash flow](images/dashboard_4_cashflow.png)
 
-**5. Alerts** - problems found and duplicated invoices.
+### 5. Alerts
+
+Problems found and duplicated invoices.
+
 ![Alerts](images/dashboard_5_alerts.png)
 
 ---
