@@ -1,4 +1,7 @@
 # Financial Control Tower
+### Accounts receivable & payable dashboard with daily Slack alerts
+
+[Versión en español ↓](#versión-en-español)
 
 A small finance project that answers three everyday questions every company has:
 
