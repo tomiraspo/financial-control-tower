@@ -90,15 +90,6 @@ The message looks like this:
 - **Power BI** for the dashboard
 - **n8n** (running in Docker) for the daily automation
 - **Slack** for the alerts
-
----
-
-## Run it yourself
-
-1. **Database:** run `sql/fi_arap.sql` in MySQL. It creates the `fi_arap` database with the tables, the data and the views.
-2. **Dashboard:** open `powerbi/financial_control_tower.pbix` and point it to your MySQL server.
-3. **Alerts:** import `n8n/daily_financial_alerts.json` in n8n, set your MySQL credential and replace the Slack webhook URL with your own.
-
 ---
 
 ## Project structure
@@ -201,12 +192,6 @@ El mensaje se ve así:
 - **Power BI** para el dashboard
 - **n8n** (en Docker) para la automatización diaria
 - **Slack** para las alertas
-
-### Probalo vos
-
-1. **Base de datos:** ejecutá `sql/fi_arap.sql` en MySQL. Crea la base `fi_arap` con las tablas, los datos y las vistas.
-2. **Dashboard:** abrí `powerbi/financial_control_tower.pbix` y apuntalo a tu servidor MySQL.
-3. **Alertas:** importá `n8n/daily_financial_alerts.json` en n8n, configurá tu credencial de MySQL y reemplazá la URL del webhook de Slack por la tuya.
 
 ### Por qué lo hice
 
