@@ -119,3 +119,97 @@ financial-control-tower/
 I wanted a project that mixes what I study (business administration) with what I can build (databases, dashboards and automation), around a process real companies run every day. I also wanted it to speak the language of SAP FI, which I am learning.
 
 **Author:** Tomás Raspo
+
+---
+
+## Versión en español
+
+Un proyecto de finanzas que responde tres preguntas que se hace cualquier empresa:
+
+- **¿Quién nos debe plata y hace cuánto?**
+- **¿Qué clientes son riesgosos?**
+- **¿Tenemos caja suficiente para lo que hay que pagar?**
+
+Usa MySQL, Power BI y n8n, y manda un resumen corto a Slack todas las mañanas. Los datos son de ejemplo, armados solo para esta demo. La estructura sigue el proceso de **cuentas por cobrar y por pagar (AR/AP)** de SAP S/4HANA FI. Los diagramas y las capturas están en inglés.
+
+![Cómo funciona](images/how_it_works.png)
+
+### Qué hace
+
+| | |
+|---|---|
+| **Antigüedad de deuda** | Agrupa las facturas de clientes sin pagar según cuánto se atrasaron: sin vencer, 1-30, 31-60, 61-90 y más de 90 días. |
+| **Score de riesgo por cliente** | Le da a cada cliente un puntaje de 0 a 100 y un nivel (bajo, medio, alto) según su deuda vencida, su demora promedio de pago y su límite de crédito. |
+| **Pronóstico de flujo de caja** | Compara la plata que está por entrar con la que está por salir en los próximos 30, 60 y 90 días. |
+| **Detección de problemas** | Marca clientes que superan su límite de crédito, facturas con más de 90 días vencidas, facturas duplicadas y pagos a proveedores que vencen en 7 días. |
+
+### Los datos
+
+Cuatro tablas simples: clientes, proveedores y las facturas de cada uno. Unas 1.800 facturas en total, con una mezcla de pagadas, pendientes y vencidas.
+
+![Modelo de datos](images/data_model.png)
+
+Si conocés SAP, es la misma idea que sus partidas abiertas de clientes (`BSID`) y de proveedores (`BSIK`), en una versión simplificada.
+
+### El dashboard
+
+Cinco páginas de Power BI construidas sobre vistas SQL.
+
+#### 1. Resumen ejecutivo
+
+Los números principales y el gráfico de antigüedad.
+
+![Resumen](images/dashboard_1_summary.png)
+
+#### 2. Antigüedad de deuda
+
+Cada factura sin pagar, filtrable por cliente.
+
+![Antigüedad](images/dashboard_2_aging.png)
+
+#### 3. Riesgo de clientes
+
+A quién hay que atender primero.
+
+![Riesgo](images/dashboard_3_risk.png)
+
+#### 4. Flujo de caja
+
+Plata que entra vs. plata que sale.
+
+![Flujo de caja](images/dashboard_4_cashflow.png)
+
+#### 5. Alertas
+
+Problemas encontrados y facturas duplicadas.
+
+![Alertas](images/dashboard_5_alerts.png)
+
+### La alerta diaria
+
+Todas las mañanas a las 9:00, un workflow de n8n lee las alertas de la base de datos y publica un mensaje en Slack.
+
+![Workflow de n8n](images/n8n_workflow.png)
+
+El mensaje se ve así:
+
+![Alerta en Slack](images/slack_alert.png)
+
+### Hecho con
+
+- **MySQL** para los datos y las vistas SQL
+- **Power BI** para el dashboard
+- **n8n** (en Docker) para la automatización diaria
+- **Slack** para las alertas
+
+### Probalo vos
+
+1. **Base de datos:** ejecutá `sql/fi_arap.sql` en MySQL. Crea la base `fi_arap` con las tablas, los datos y las vistas.
+2. **Dashboard:** abrí `powerbi/financial_control_tower.pbix` y apuntalo a tu servidor MySQL.
+3. **Alertas:** importá `n8n/daily_financial_alerts.json` en n8n, configurá tu credencial de MySQL y reemplazá la URL del webhook de Slack por la tuya.
+
+### Por qué lo hice
+
+Quería un proyecto que mezcle lo que estudio (administración) con lo que sé construir (bases de datos, dashboards y automatización), alrededor de un proceso que las empresas usan todos los días. También quería que hablara el idioma de SAP FI, que estoy aprendiendo.
+
+**Autor:** Tomás Raspo
